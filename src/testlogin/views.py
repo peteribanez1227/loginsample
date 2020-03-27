@@ -30,7 +30,7 @@ def register(request):
             for msg in form.error_messages:
                 print(form.error_messages[msg])
         form = UserCreationForm()
-        return render(request, "register", context={"form":form})
+        return render(request, 'register.html', context={'form':form})
 
 def login_view(request):
     return render(request,'login.html',{})
@@ -43,3 +43,4 @@ def login_view(request):
         else:
             form = AuthenticationForm()
         return render(request,'404.html',{'form':form})
+
