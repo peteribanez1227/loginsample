@@ -1,15 +1,19 @@
 from django.conf import settings
-from django.conf.urls import url,include
+from django.conf.urls import url, include
+from django.contrib.auth import views as auth_views
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path
-from .views import index, login_view, register
+from .views import index, login_view, register, employee
+
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', index,name='homepage'),
     path('register/', register, name='register'),
     path('login/',login_view,name='login'),
+    path('employee/', employee, name='employee'),
     # url(r'^/login/$', login_view, name='login'),
     # path('logout/', logout_request, name="logout"),
 ]
