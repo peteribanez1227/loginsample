@@ -8,20 +8,10 @@ def index(request):
     return render(request, 'index.html',{})
 
 def employee(request):
-    if request.method == 'POST':
-        form = AuthenticationForm(data=request.POST)
-        if form.is_valid():
-            user = form.get_user()
-            login(request, user)
-    #         if 'next' in request.POST:
-    #             return redirect(request.POST.get('next'))
-    #         else:
-    #             return redirect(request,'',next)
-    #     else:
-    #         form = AuthenticationForm()
-    #     return render(request,'404.html',{'form':form})
-    # args = {'form': form}
-    return HttpResponseRedirect('/employee/')
+    return render(request, 'employee.html')
+
+def upload_employee(request):
+    return render(request, 'uploademployee.html')
 
 # def logout_request(request):
 #     logout(request)
@@ -49,7 +39,6 @@ def register(request):
     return render(request, 'register.html', args)
 
 def login_view(request):
-    return render(request,'login.html',{})
     if request.method == 'POST':
         form = AuthenticationForm(data=request.POST)
         if form.is_valid():
@@ -62,4 +51,4 @@ def login_view(request):
         else:
             form = AuthenticationForm()
         return render(request,'404.html',{'form':form})
-    return render(request, '', {})
+    return render(request, 'login.html', {})

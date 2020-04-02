@@ -4,16 +4,17 @@ from django.contrib.auth import views as auth_views
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path
-from .views import index, login_view, register, employee
+from . import views
 
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', index,name='homepage'),
-    path('register/', register, name='register'),
-    path('login/',login_view,name='login'),
-    path('employee/', employee, name='employee'),
+    path('', views.index,name='homepage'),
+    path('register/', views.register, name='register'),
+    path('login/', views.login_view, name='login'),
+    path('employee/', views.employee, name='employee'),
+    path('uploademployee/', views.upload_employee, name='uploademployee'),
     # url(r'^/login/$', login_view, name='login'),
     # path('logout/', logout_request, name="logout"),
 ]
