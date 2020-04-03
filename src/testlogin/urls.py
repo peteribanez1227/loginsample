@@ -15,6 +15,8 @@ urlpatterns = [
     path('login/', views.login_view, name='login'),
     path('employee/', views.employee, name='employee'),
     path('uploademployee/', views.upload_employee, name='uploademployee'),
+    path('attendance/', views.attendance, name='attendance'),
+    path('disputes/', views.disputes, name='disputes'),
     # url(r'^/login/$', login_view, name='login'),
     # path('logout/', logout_request, name="logout"),
 ]

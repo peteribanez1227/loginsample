@@ -8,10 +8,19 @@ def index(request):
     return render(request, 'index.html',{})
 
 def employee(request):
-    return render(request, 'employee.html')
+    return render(request, 'employee.html',{})
 
 def upload_employee(request):
-    return render(request, 'uploademployee.html')
+    return render(request, 'uploademployee.html',{})
+    # return HttpResponseRedirect('/uploademployee')
+
+def attendance(request):
+    return render(request, 'attendance.html',{})
+    # return HttpResponseRedirect('/attendance')
+    # return redirect(request, 'attendance.html',{})
+
+def disputes(request):
+    return render(request,'disputes.html',{})
 
 # def logout_request(request):
 #     logout(request)

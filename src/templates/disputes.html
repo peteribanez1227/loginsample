@@ -254,56 +254,53 @@
         <div class="container-fluid">
 
           <!-- Page Heading -->
-          <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Employee Management</h1>
-            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
+          <div class="container">
+            <div class="row">
+              <div class="col-sm-8">
+                <h1 class="h3 mb-0 text-gray-800">Manage Disputes</h1>
+              </div>
+              <div class="col-sm-2">
+                  <div class="col-6 col-md-4"><input class="btn btn-primary" type="button" value="Confirm Disputes" name="confirmdisputes"></div>
+              </div>
+              <div class="col-sm-2">
+                <div class="col-6 col-md-4"><input class="btn btn-primary" type="button" value="Submit" name="submitdisputes"></div>
+              </div>
+            </div>
           </div>
+          <!-- Content Row -->
           <table class="table table-striped table-responsive-md btn-table col-lg-12 mb-4">
             <thead>
-              <tr>
-                <td>Last Name</td>
-                <td>First Name</td>
-                <td>Middle Initial</td>
-                <td>Employee Number</td>
-                <td>Lead Assigned</td>
-                <td>Department</td>
-                <td>Shift</td>
-              </tr>
+                <tr>
+                    <td>Date</td>
+                    <td>Agent Name</td>
+                    <td>Agent Number</td>
+                    <td>Dispute</td>
+                    <td>Time In</td>
+                    <td>Time Out</td>
+                    <td>Time issued</td>
+                </tr>
             </thead>
-
-            <tbody>
-              <tr>
-                <td>Ibanez</td>
-                <td>John Peter</td>
-                <td>C.</td>
-                <td>202000595</td>
-                <td>Kyle Favorito</td>
-                <td>Sales</td>
-                <td>Night Shift</td>
-              </tr>
-              <tr>
-                <td>Dela Cruz</td>
-                <td>Juan</td>
-                <td>P.</td>
-                <td>201212201</td>
-                <td>Kyle Favorito</td>
-                <td>Sales</td>
-                <td>Night Shift</td>
-              </tr>
-              <tr>
-                <td>Ibanez</td>
-                <td>John Peter</td>
-                <td>C.</td>
-                <td>202000595</td>
-                <td>Kyle Favorito</td>
-                <td>Sales</td>
-                <td>Night Shift</td>
-              </tr>
-            </tbody>
+              <tbody>
+                <tr>
+                    <td>4/2/2020</td>
+                    <td>John Peter Ibanez</td>
+                    <td>202000595</td>
+                    <td>Bio Break Issue</td>
+                    <td>16:15</td>
+                    <td>16:30 </td>
+                    <td>15 minutes</td>
+                </tr>
+                <tr>
+                    <td>4/4/2020</td>
+                    <td>John Peter Ibanez</td>
+                    <td>202000595</td>
+                    <td>Clinic Aux</td>
+                    <td>10:00</td>
+                    <td>11:30 </td>
+                    <td>90 Minutes</td>
+                </tr>
+              </tbody>
           </table>
-
-          <!-- Content Row -->
-          <div class="row">
 
             <!-- Content Column -->
             <div class="col-lg-6 mb-4">
