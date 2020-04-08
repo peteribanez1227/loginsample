@@ -19,7 +19,7 @@
       <hr class="sidebar-divider my-0">
               <!-- Nav Item - Dashboard -->
       <li class="nav-item active">
-        <a class="nav-link" href="">
+        <a class="nav-link" href="{% url 'index' %}">
           <i class="fas fa-fw fa-tachometer-alt"></i>
           <span>Dashboard</span></a>
       </li>
@@ -34,25 +34,25 @@
 
       <!-- Nav Item - Pages Collapse Menu -->
       <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" href="/employee">
+        <a class="nav-link collapsed" href="{% url 'employee' %}">
           <span>Employee Management</span>
         </a>
       </li>
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
+        <a class="nav-link collapsed" href="{% url 'uploademployee' %}" aria-expanded="true" aria-controls="collapseUtilities">
           <span>Upload Employees</span>
         </a>
       </li>
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" >
+        <a class="nav-link collapsed" href="{% url 'attendance' %}">
           <span>Manage Attendance</span>
         </a>
       </li>
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" >
+        <a class="nav-link collapsed" href="{% url 'disputes' %}">
           <span>Manage Disputes</span>
         </a>
       </li>
@@ -353,7 +353,7 @@
         <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
         <div class="modal-footer">
           <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-          <a class="btn btn-primary" href="login/">Logout</a>
+          <a class="btn btn-primary" href="{% url 'login' %}">Logout</a>
         </div>
       </div>
     </div>

@@ -3,21 +3,39 @@ from django.http import HttpResponse
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
+from django.template import loader
 
+
+# @login_required
 def index(request):
-    return render(request, 'index.html',{})
+    # t = loader.get_template('index.html')
+    # context = {}
+    # return HttpResponse(t.render(context, request))
+    return render(request, 'index.html')
+
+# class EmployeeView(EmployeeView):
+#     model = Employee
+#     template_name = 'employee.html'
 
 def employee(request):
-    return render(request, 'employee.html',{})
+    return render(request, 'employee.html')
+    # return HttpResponseRedirect('employee')
+    # t = loader.get_template('employee.html')
+    # context = {}
+    # return HttpResponse(t.render(context, request))
+
+
 
 def upload_employee(request):
-    return render(request, 'uploademployee.html',{})
+    return render(request, 'uploademployee.html', {})
     # return HttpResponseRedirect('/uploademployee')
 
 def attendance(request):
-    return render(request, 'attendance.html',{})
+    return render(request, 'attendance.html', {})
+    # context ={}
+    # template=loader.get_template('attendance.html')
+    # return render(request, 'attendance',{})
     # return HttpResponseRedirect('/attendance')
-    # return redirect(request, 'attendance.html',{})
 
 def disputes(request):
     return render(request,'disputes.html',{})
@@ -39,7 +57,7 @@ def register(request):
             )
             if authenticated:
                 login(request, authenticated)
-                return redirect('')
+                return redirect('index.html')
             else:
                 for msg in form.error_messages:
                     print(form.error_messages[msg])
@@ -59,5 +77,5 @@ def login_view(request):
                 return redirect(request,'',next)
         else:
             form = AuthenticationForm()
-        return render(request,'404.html',{'form':form})
-    return render(request, 'login.html', {})
+        return render(request,'404.html',{'form': form})
+    return render(request, 'login.html')
