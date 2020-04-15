@@ -52,12 +52,11 @@ def register(request):
         if form.is_valid():
             user = form.save()
             user.refresh_from_db()
-            user.profile.birth_date = form.cleaned_data.get('birth_date')
             username = form.cleaned_data.get('username')
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=raw_password)
             login(request, user)
-            return redirect('index')
+            return render(request, 'index.html', {'forms': form})
     else:
         form = SignUpForm()
     return render(request, 'register.html', {'form': form})
@@ -72,7 +71,7 @@ def login_view(request):
             if 'next' in request.POST:
                 return redirect(request.POST.get('next'))
             else:
-                return render(request,'index.html')
+                return render(request,'index.html', {'form': form})
         else:
             form = SignUpForm()
         return render(request,'404.html',{'form': form})

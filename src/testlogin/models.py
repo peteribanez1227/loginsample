@@ -20,7 +20,8 @@ class Employee(models.Model):
     firstname = models.CharField(max_length=50)
     middlename = models.CharField(max_length=3)
     employeenum = models.CharField(max_length=11)
-    teamlead = models.CharField(max_length=100)
+    employeetype = models.CharField(max_length=3)
+    teamlead = models.CharField(max_length=50)
     department = models.CharField(max_length=50)
     shiftschedule = models.CharField(max_length=20)
 
