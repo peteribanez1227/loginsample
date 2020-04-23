@@ -1,22 +1,23 @@
-from django.shortcuts import render, redirect, HttpResponseRedirect
+from django import forms
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login, logout, authenticate
-from .forms import SignUpForm
+from .forms import SignUpForm, LoginForm
+from django.urls import reverse, reverse_lazy
+from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.models import User
 from django.contrib import messages
 from django.template import loader
 
-
-# @login_required
+@login_required
 def index(request):
-    # t = loader.get_template('index.html')
-    # context = {}
-    # return HttpResponse(t.render(context, request))
-    return render(request, 'index.html')
+    users = User.objects.all()
+    context = {
+        'users': users
+        }
+    template = loader.get_template('index.html')
 
-# class EmployeeView(EmployeeView):
-#     model = Employee
-#     template_name = 'employee.html'
+    return HttpResponse(template.render(context, request))
 
 def employee(request):
     return render(request, 'employee.html')
@@ -24,8 +25,6 @@ def employee(request):
     # t = loader.get_template('employee.html')
     # context = {}
     # return HttpResponse(t.render(context, request))
-
-
 
 def upload_employee(request):
     return render(request, 'uploademployee.html', {})
@@ -41,10 +40,15 @@ def attendance(request):
 def disputes(request):
     return render(request,'disputes.html',{})
 
-# def logout_request(request):
-#     logout(request)
-#     messages.info(request, "Logged out sucessfully!")
-#     return redirect('')
+
+def logout_request(request):
+    logout(request)
+    template = 'logout.html'
+    messages.info(request, "Logged out sucessfully!")
+    return render(request, template)
+    return HttpResponseRedirect('login.html')
+
+
 
 def register(request):
     if request.method == "POST":
@@ -64,15 +68,43 @@ def register(request):
 
 def login_view(request):
     if request.method == 'POST':
-        form = SignUpForm(data=request.POST)
-        if form.is_valid():
-            user = form.get_user()
+        email = request.POST.get('email')
+        usrobj = User.objects.filter(email=email)
+        usrobj = usrobj.last()
+        uname = usrobj.username
+        password = request.POST['password']
+        user = authenticate(username=uname, password=password)
+        if user.is_active:
             login(request, user)
-            if 'next' in request.POST:
-                return redirect(request.POST.get('next'))
-            else:
-                return render(request,'index.html', {'form': form})
+            return redirect('index')
+        # elif user.is_staff:
+        #     login(request, user)
+        #     return redirect('manageuser')
         else:
-            form = SignUpForm()
-        return render(request,'404.html',{'form': form})
+            return HttpResponse("Inactive account")
+            return render(request, 'login.html',)
+
     return render(request, 'login.html')
+
+
+def adminpage(request):
+    # if request.method == 'POST':
+    #     form = AuthenticationForm(data=request.POST)
+    #     if form.is_valid():
+    return render(request, 'adminpage.html',{})
+
+@permission_required(User.is_superuser)
+def manageuser(request):
+    logged_user = request.user
+    username = request.POST.get('username')
+    users = User.objects.get(username=uname)
+
+    context = {
+        'username': uname,
+        'users': request.user,
+        }
+    template = loader.get_template('manageuser.html')
+
+    return HttpResponse(template.render(context, request))
+    return render(request, 'manageuser.html',{})
+

@@ -1,5 +1,6 @@
 import os
-
+from django.conf import global_settings
+from django.urls import reverse, reverse_lazy
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -24,6 +25,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'testlogin',
 ]
 
 MIDDLEWARE = [
@@ -54,10 +56,11 @@ TEMPLATES = [
     },
 ]
 
+
 WSGI_APPLICATION = 'testlogin.wsgi.application'
 
 # Database
-# https://docs.djangoproject.com/en/3.0/ref/settings/#databases
+# https://docs.djangoproject.com/en/3.0/ref/settings/#
 
 DATABASES = {
     'default': {
@@ -65,6 +68,10 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+
+AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.ModelBackend',]
+
+AUTH_USER_MODEL = 'auth.User'
 
 
 # Password validation
@@ -102,7 +109,9 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
-
+LOGIN_REDIRECT_URL = reverse_lazy('index')
+LOGIN_URL = reverse_lazy('login_view')
+LOGOUT_REDIRECT_URL = reverse_lazy('login_view')
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static_in_env')]

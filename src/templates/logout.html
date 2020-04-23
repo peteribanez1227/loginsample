@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% load static %}
+<form method = "POST">
+  {% csrf_token %}
+  {{form.as_p}}
+
+  <title>Logout User</title>
+  {% block content %}
+  <a href="/login/">
+    <input type="button" value="Log Back In?" name="login">
+  </a>
+</form>
+{% endblock content %}
