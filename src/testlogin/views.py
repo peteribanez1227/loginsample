@@ -1,23 +1,40 @@
-from django import forms
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth import login, logout, authenticate
 from .forms import SignUpForm, LoginForm
 from django.urls import reverse, reverse_lazy
 from django.contrib.auth.decorators import login_required, permission_required, user_passes_test
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.contrib import messages
 from django.template import loader
+from .models import Employee, UserProfileInfo, GroupsInfo, UserDeletedFile
+
+
+def is_employee(user):
+    return user.groups.filter(name='Employee').exists()
+
+def is_manager(user):
+    return user.groups.filter(name='Manager').exists()
+
+def is_agent(user):
+    return user.groups.filter(name='Agent').exists()
+
+
+def forgotpassword(request):
+    return render(request, 'forgotpassword.html', {})
 
 @login_required
 def index(request):
+    groups = request.user.groups.all()
     users = User.objects.all()
     context = {
-        'users': users
+        'groups': groups,
+        'users': users,
         }
     template = loader.get_template('index.html')
 
     return HttpResponse(template.render(context, request))
+
 
 @login_required
 def employee(request):
@@ -28,6 +45,7 @@ def employee(request):
     # return HttpResponse(t.render(context, request))
 
 @login_required
+@user_passes_test(is_manager)
 def upload_employee(request):
     return render(request, 'uploademployee.html', {})
     # return HttpResponseRedirect('/uploademployee')
@@ -39,6 +57,7 @@ def attendance(request):
     # template=loader.get_template('attendance.html')
     # return render(request, 'attendance',{})
     # return HttpResponseRedirect('/attendance')
+
 
 def disputes(request):
     return render(request,'disputes.html',{})
@@ -83,15 +102,15 @@ def login_view(request):
             if user.is_superuser or user.is_staff:
                 print(user)
                 login(request, user)
-                return redirect('manageuser')
+                return redirect('adminpage')
             else:
                 login(request, user)
                 return redirect('index')
         else:
-            return HttpResponse("Inactive account")
             return render(request, 'login.html',)
 
     return render(request, 'login.html')
+
 
 # def check_admin(user):
 #     return user.is_superuser
@@ -101,22 +120,72 @@ def adminpage(request):
     return render(request, 'adminpage.html',{})
 
 @login_required
-def manageuser(request):
+def manageuser(request, pk=None):
+    groups = request.user.groups.all()
     userList = User.objects.all()
+
+    # get_user = User.objects.get(pk=pk)
+    # print(get_user)
+
+    # def get_context_data(self, *args, **kwargs):
+    #     context = super.get_context_data(**kwargs)
+    #
+    #     context['user'] = User.objects.all()
+    #     context['filter'] = User(self.request.GET, queryset=User.objects.all())
+    #     return context
+
     context = {
-            'users' : userList
+            'groups': groups,
+            'users' : userList,
+            # 'getuser': get_user,
         }
     template = loader.get_template('manageuser.html')
 
     return HttpResponse(template.render(context, request))
 
 
+
+
 @login_required
-def view_user(request):
-    userList = User.objects.all()
+def view_user(request, uid):
+    user = User.objects.get(id=uid)
+
     context = {
-            'users' : userList
+            'users': user,
         }
+
     template = loader.get_template('viewuser.html')
 
     return HttpResponse(template.render(context, request))
+
+
+@login_required
+def delete_user(request,uid):
+    user = User.objects.get(id=uid)
+    if user:
+        userdeleted = UserDeletedFile.objects.create(user_id=user.id, name=user.username,
+                                                     first_name=user.first_name,last_name=user.last_name,
+                                                     email=user.email, is_staff=user.is_staff, is_active=user.is_active,
+                                                     last_login=user.last_login)
+        userdeleted.save()
+        user.delete()
+    return redirect('manageuser')
+
+
+
+@login_required
+def upload_users(request):
+    return render(request, 'uploadusers.html',{})
+
+@login_required
+def creategroup(request):
+    if request.method == 'POST':
+        groupname = request.POST.get('groupname')
+
+        if groupname:
+            groups = Group.objects.create(name=groupname)
+            groups.save()
+
+    return render(request, 'creategroup.html')
+
+

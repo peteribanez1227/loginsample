@@ -38,30 +38,44 @@
       </div>
 
       <!-- Nav Item - Pages Collapse Menu -->
+      {% if users.groups.name == "Manager" %}
       <li class="nav-item">
         <a class="nav-link collapsed" href="{% url 'employee' %}">
           <span>Employee Management
         </a>
       </li>
+      {% endif %}
 
       <!-- Nav Item - Utilities Collapse Menu -->
+      {% if  users.groups.name == "Employee" or users.groups.name == "Manager" %}
       <li class="nav-item">
         <a class="nav-link collapsed" href="{% url 'uploademployee' %}" aria-expanded="true" aria-controls="collapseUtilities">
           <span>Upload Employees</span>
         </a>
       </li>
+      {% endif %}
 
       <li class="nav-item">
         <a class="nav-link collapsed" href="{% url 'attendance' %}">
-          <span>Manage Attendance</span>
+          <span>Daily Attendance</span>
         </a>
       </li>
 
+      {% if users.groups.name == "Employee" or user.groups.name == "Agent"  %}
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="{% url 'disputes' %}" >
+          <span>Send Disputes</span>
+        </a>
+      </li>
+      {% endif %}
+
+      {% if users.groups == Manager %}
       <li class="nav-item">
         <a class="nav-link collapsed" href="{% url 'disputes' %}" >
           <span>Manage Disputes</span>
         </a>
       </li>
+      {% endif %}
 
 
     </ul>

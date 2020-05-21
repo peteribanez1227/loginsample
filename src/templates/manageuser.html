@@ -13,7 +13,7 @@
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
       <!-- Sidebar - Brand -->
-      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{% url 'index' %}">
+      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{% url 'adminpage' %}">
         <div class="sidebar-brand-icon rotate-n-15">
         </div>
         <div class="sidebar-brand-text mx-3">Admin </div>
@@ -51,8 +51,8 @@
 
       <!-- Nav Item - Utilities Collapse Menu -->
       <li class="nav-item">
-        <a class="nav-link collapsed" href="{% url 'uploademployee' %}" aria-expanded="true" aria-controls="collapseUtilities">
-          <span>Grant Access</span>
+        <a class="nav-link collapsed" href="{% url 'creategroup' %}" aria-expanded="true" aria-controls="collapseUtilities">
+          <span>Create Groups</span>
         </a>
       </li>
     </ul>
@@ -254,7 +254,7 @@
           <!-- Page Heading -->
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800" data-href-template="{% url 'index' %}">Manage Users</h1>
-            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Users</a>
+            <a href="{% url 'uploadusers' %}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Users</a>
           </div>
 
           <!-- Content Row -->
@@ -266,7 +266,7 @@
                 <td>First Name</td>
                 <td>Email Address</td>
                 <td>Employee Number</td>
-                <td>Admin Status</td>
+                <td>Group</td>
                 <td></td>
               </tr>
             </thead>
@@ -279,12 +279,11 @@
                 <td>{{ user.first_name}}</td>
                 <td>{{ user.email}}</td>
                 <td>{{ user.id }}</td>
-                <td>{{ user.is_superuser }}</td>
-                <td><input type="button" value="View" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" href="{% url 'viewuser' %}"></td>
-                <td><input type="button" value="Delete" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"></td>
+                <td>{{ user.groups.name }}</td>
+                <td><a href="{% url 'viewuser' user.id  %}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">View</a></td>
+                <td><a href="{% url 'deleteuser' user.id %}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">Delete </a></td>
               </tr>
               {% endfor %}
-
               </tbody>
               </table>
 
