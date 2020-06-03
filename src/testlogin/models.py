@@ -14,8 +14,10 @@ class UserProfileInfo(models.Model):
 
 
 class GroupsInfo(UserProfileInfo):
-    role = models.CharField(max_length=30)
-    groupname = models.CharField(max_length=30)
+    name = models.CharField(max_length=30)
+
+    def __str__(self):
+        return self.name
 
 
 class Employee(models.Model):

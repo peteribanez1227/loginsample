@@ -4,10 +4,11 @@ from django.contrib.auth import login, logout, authenticate
 from .forms import SignUpForm, LoginForm
 from django.urls import reverse, reverse_lazy
 from django.contrib.auth.decorators import login_required, permission_required, user_passes_test
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import User, Group, GroupManager, PermissionManager, UserManager
 from django.contrib import messages
 from django.template import loader
 from .models import Employee, UserProfileInfo, GroupsInfo, UserDeletedFile
+import csv, io
 
 
 def is_employee(user):
@@ -175,17 +176,49 @@ def delete_user(request,uid):
 
 @login_required
 def upload_users(request):
-    return render(request, 'uploadusers.html',{})
+    if request.method == 'POST':
+        if request.POST.get('submit'):
+         with open(os.path.join(settings.BASE_DIR, 'media', 'core', 'employees.csv')) as f:
+             reader = csv.reader(f)
+             for row in reader:
+                 user = User.objects.create(
+                     username=str(row[0]),
+                     is_superuser= str(row[1]),
+                     password = str(row[2]),
+                     first_name = str(row[3]),
+                     last_name = str(row[4]),
+                     email=str(row[5])
+                 )
+                 user.save()
+
+    context = {}
+
+    return render(request, 'uploadusers.html', context)
+        # group = UserManager.objects.create(id=id)
+        # response = HttpResponse(content_type='text/csv')
+        # response['Content-Disposition'] = 'attachment; filename="employee.csv"'
+        #
+        # writer = csv.writer(response)
+        # writer.writerow()
+        # return response
+
 
 @login_required
 def creategroup(request):
     if request.method == 'POST':
-        groupname = request.POST.get('groupname')
+        if request.POST.get('groupname'):
 
-        if groupname:
-            groups = Group.objects.create(name=groupname)
-            groups.save()
+            group = request.POST.get('groupname')
+            Group.objects.create(name=group)
+            # GroupManager.objects.filter(id=id)
+            #Usergroups.objects.create(user_id = , group_id =)
+
+        return render(request,'creategroup.html')
 
     return render(request, 'creategroup.html')
 
 
+# @login_required
+# def createuser(request):
+#     if request.method == 'POST':
+#         if request.method == '':

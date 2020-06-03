@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 
 {% load static %}
-<form method = "POST" action="">
+<form method = "POST" action="{% url 'creategroup' %}">
   {% csrf_token %}
-  <title>Admin - Dashboard</title>
+  <title>Admin - Create Groups</title>
 
   {% block content %}
   <!-- Page Wrapper -->
@@ -26,11 +26,8 @@
       <li class="nav-item active">
         <a class="nav-link" href="">
           <i class="fas fa-fw fa-tachometer-alt"></i>
-          <span>Manage Users</span></a>
+          <span>Dashboard</span></a>
       </li>
-
-      <!-- Content Row -->
-
 
       <!-- Divider -->
       <hr class="sidebar-divider">
@@ -41,17 +38,15 @@
       </div>
 
       <!-- Nav Item - Pages Collapse Menu -->
-       <li class="nav-item">
-          <a class="nav-link collapsed" href="{% url 'manageuser' %}">
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="{% url 'manageuser' %}">
           <span>Manage Users
-          </a>
-       </li>
-
-
+        </a>
+      </li>
 
       <!-- Nav Item - Utilities Collapse Menu -->
       <li class="nav-item">
-        <a class="nav-link collapsed" href="{% url 'creategroup' %}" aria-expanded="true" aria-controls="collapseUtilities">
+        <a class="nav-link collapsed" href="{% url 'creategroup'%}" aria-expanded="true" aria-controls="collapseUtilities">
           <span>Create Groups</span>
         </a>
       </li>
@@ -73,16 +68,16 @@
           </button>
 
           <!-- Topbar Search -->
-          <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-            <div class="input-group">
-              <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
-              <div class="input-group-append">
-                <button class="btn btn-primary" type="button">
-                  <i class="fas fa-search fa-sm"></i>
-                </button>
-              </div>
-            </div>
-          </form>
+<!--          <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">-->
+<!--            <div class="input-group">-->
+<!--              <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">-->
+<!--              <div class="input-group-append">-->
+<!--                <button class="btn btn-primary" type="button">-->
+<!--                  <i class="fas fa-search fa-sm"></i>-->
+<!--                </button>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </form>-->
 
           <!-- Topbar Navbar -->
           <ul class="navbar-nav ml-auto">
@@ -93,19 +88,19 @@
                 <i class="fas fa-search fa-fw"></i>
               </a>
               <!-- Dropdown - Messages -->
-              <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in" aria-labelledby="searchDropdown">
-                <form class="form-inline mr-auto w-100 navbar-search">
-                  <div class="input-group">
-                    <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
-                    <div class="input-group-append">
-                      <button class="btn btn-primary" type="button">
-                        <i class="fas fa-search fa-sm"></i>
-                      </button>
-                    </div>
-                  </div>
-                </form>
-              </div>
-            </li>
+<!--              <div class="dropdown-menu dropdown-menu-right p-3 shadow animated&#45;&#45;grow-in" aria-labelledby="searchDropdown">-->
+<!--                <form class="form-inline mr-auto w-100 navbar-search">-->
+<!--                  <div class="input-group">-->
+<!--                    <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">-->
+<!--                    <div class="input-group-append">-->
+<!--                      <button class="btn btn-primary" type="button">-->
+<!--                        <i class="fas fa-search fa-sm"></i>-->
+<!--                      </button>-->
+<!--                    </div>-->
+<!--                  </div>-->
+<!--                </form>-->
+<!--              </div>-->
+<!--            </li>-->
 
             <!-- Nav Item - Alerts -->
             <li class="nav-item dropdown no-arrow mx-1">
@@ -217,9 +212,9 @@
             <!-- Nav Item - User Information -->
             <li class="nav-item dropdown no-arrow">
               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                {% if user.is_active %}
+                {% if user.is_authenticated %}
                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ user.first_name }}</span>
-                 {% endif %}
+                {% endif %}
               </a>
               <!-- Dropdown - User Information -->
               <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
@@ -236,7 +231,7 @@
                   Activity Log
                 </a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="" data-toggle="modal" data-target="#logoutModal">
+                <a class="dropdown-item" href="{% url 'logout' %}" data-toggle="modal" data-target="#logoutModal">
                   <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                   Logout
                 </a>
@@ -253,48 +248,24 @@
 
           <!-- Page Heading -->
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800" data-href-template="{% url 'index' %}">Create Group</h1>
-            <a href="{% url 'uploadusers' %}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Users</a>
+            <h1 class="h3 mb-0 text-gray-800" data-href-template="{% url 'creategroup' %}">Create Groups</h1>
           </div>
 
           <!-- Content Row -->
-          <div class="row">
-            <table class="table table-striped table-responsive-md btn-table col-lg-12 mb-4">
-            <thead>
-              <tr>
-                <td>Group Name</td>
-                <td><input type="text" id="groupname"></td>
-              </tr>
-              <tr>
-              <td>
-                <button type="submit" class="btn btn-primary btn-sm pull-right" id="submitgroup">Submit</button>
-              </td>
-              </tr>
-            </thead>
-          </div>
-            </table>
-
-
+            <div class="row">
 
           <!-- Content Row -->
-          <div class="row">
-
-            <!-- Content Column -->
-            <div class="col-lg-6 mb-4">
-
-              <!-- Color System -->
               <div class="row">
-                <div class="col-lg-6 mb-4">
+
+              <input type="text" name="groupname">
+              <input type="submit" value="Submit" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+
               </div>
 
-            <div class="col-lg-6 mb-4">
             </div>
-          </div>
+            <!-- /.container-fluid -->
 
         </div>
-        <!-- /.container-fluid -->
-
-      </div>
 
       <!-- Footer -->
       <footer class="sticky-footer bg-white">
@@ -334,6 +305,7 @@
         </div>
       </div>
     </div>
+  </form>
     {% endblock content %}
   </div>
 

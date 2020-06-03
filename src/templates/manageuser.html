@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% load static %}
-<form method = "POST" action="">
+<form method = "POST" action="{% url 'view_user' %}">
   {% csrf_token %}
   <title>Admin - Dashboard</title>
 
@@ -46,8 +46,6 @@
           <span>Manage Users
           </a>
        </li>
-
-
 
       <!-- Nav Item - Utilities Collapse Menu -->
       <li class="nav-item">

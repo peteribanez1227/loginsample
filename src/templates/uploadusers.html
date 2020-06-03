@@ -1,9 +1,8 @@
 {% extends 'base.html' %}
 
 {% load static %}
-<form method = "POST">
+<form method = "POST" action="{% url 'upload_users' %}">
   {% csrf_token %}
-  {{form.as_p}}
     <title>Employee Dashboard</title>
 
   {% block content %}
@@ -23,6 +22,13 @@
           <i class="fas fa-fw fa-tachometer-alt"></i>
           <span>Manage Users</span></a>
       </li>
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="{% url 'creategroup'%}" aria-expanded="true" aria-controls="collapseUtilities">
+          <span>Create Groups</span>
+        </a>
+      </li>
+
 
       <!-- Divider -->
       <hr class="sidebar-divider">
@@ -243,9 +249,13 @@
           <!-- Content Row -->
             <div class="row">
                 <div class="file-field">
-                    <div class="btn btn-primary btn-sm float-left">
-                        <input type="file">
+                    <div class="row">
+                        <input type="file" name="userfile">
                     </div>
+
+                  <div clss="row">
+                  <input type="submit" value="Submit" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+                  </div>
                 </div>
             </div>
 
