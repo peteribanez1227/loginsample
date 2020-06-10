@@ -9,7 +9,8 @@ from django.contrib import messages
 from django.template import loader
 from .models import Employee, UserProfileInfo, GroupsInfo, UserDeletedFile
 import csv, io
-
+import codecs
+import hashlib
 
 def is_employee(user):
     return user.groups.filter(name='Employee').exists()
@@ -100,11 +101,12 @@ def login_view(request):
         password = request.POST['password']
         user = authenticate(username=uname, password=password)
         if user is not None and user.is_authenticated:
-            if user.is_superuser or user.is_staff:
+            if user.is_superuser:
                 print(user)
                 login(request, user)
                 return redirect('adminpage')
             else:
+                print(user)
                 login(request, user)
                 return redirect('index')
         else:
@@ -122,7 +124,7 @@ def adminpage(request):
 
 @login_required
 def manageuser(request, pk=None):
-    groups = request.user.groups.all()
+    groups = Group.objects.all()
     userList = User.objects.all()
 
     # get_user = User.objects.get(pk=pk)
@@ -175,25 +177,54 @@ def delete_user(request,uid):
 
 
 @login_required
-def upload_users(request):
+def uploadusers(request):
     if request.method == 'POST':
-        if request.POST.get('submit'):
-         with open(os.path.join(settings.BASE_DIR, 'media', 'core', 'employees.csv')) as f:
-             reader = csv.reader(f)
-             for row in reader:
-                 user = User.objects.create(
-                     username=str(row[0]),
-                     is_superuser= str(row[1]),
-                     password = str(row[2]),
-                     first_name = str(row[3]),
-                     last_name = str(row[4]),
-                     email=str(row[5])
-                 )
-                 user.save()
+        files = request.FILES['userfile']
+
+        if not files.name.endswith('.csv'):
+            messages.error(request, 'THIS IS NOT A CSV FILE')
+
+        if request.FILES.get('userfile'):
+            data_set = files.read().decode('UTF-8')
+            io_string = io.StringIO(data_set)
+            next(io_string)
+            for column in csv.reader(io_string, delimiter=','):
+                usr, created = User.objects.update_or_create(
+                                    is_superuser=column[1],
+                                    username=column[2],
+                                    first_name=column[3],
+                                    last_name=column[4],
+                                    email=column[5],
+                                    is_staff=column[6],
+                                    is_active=column[7],
+                )
+                group = Group.objects.get(name=column[8])
+                usr.set_password(column[0])
+                usr.groups.add(group)
+                usr.save()
+
+            # for username, password in User.objects.all():
+            #     if authenticate(username=username, password=password) is None:
+            #         print
+            #         "Failed to authenticate user {!r}".format(username)
+
 
     context = {}
+    return render(request, "uploadusers.html", context)
 
-    return render(request, 'uploadusers.html', context)
+            # else:
+            #     with open(os.path.join(settings.BASE_DIR, 'media', 'core', 'employees.csv')) as f:
+            #         reader = csv.reader(f)
+            #         for row in reader:
+            #              User.objects.create(
+            #                 username=str(row[0]),
+            #                 is_superuser= str(row[1]),
+            #                 password = str(row[2]),
+            #                 first_name = str(row[3]),
+            #                 last_name = str(row[4]),
+            #                 email=str(row[5])
+            #             )
+
         # group = UserManager.objects.create(id=id)
         # response = HttpResponse(content_type='text/csv')
         # response['Content-Disposition'] = 'attachment; filename="employee.csv"'

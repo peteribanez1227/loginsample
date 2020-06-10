@@ -12,6 +12,8 @@ class UserProfileInfo(models.Model):
     profilepic = models.CharField(max_length=50)
     email = models.CharField(max_length=40)
 
+    def __str__(self):
+        return self.name
 
 class GroupsInfo(UserProfileInfo):
     name = models.CharField(max_length=30)
@@ -42,6 +44,8 @@ class UserDeletedFile(models.Model):
     last_login = models.IntegerField()
     datecreated = models.DateField()
 
+    class Meta:
+        db_table = "UserDeletedFile"
 
 class EmployeeDeletedFile(models.Model):
     empid = models.ForeignKey(Group, on_delete=models.CASCADE)
@@ -49,6 +53,9 @@ class EmployeeDeletedFile(models.Model):
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
     date_created = models.DateField()
+
+    class Meta:
+        db_table = "EmployeeDeletedFiles"
 
 
 class IncidentType(models.Model):
@@ -62,6 +69,10 @@ class DisputeInfo(models.Model):
     incident_id = models.ForeignKey(IncidentType, on_delete=models.CASCADE)
     dispute_name = models.CharField(max_length=50)
     dispute_type = models.CharField(max_length=50)
+    dispute_code = models.CharField(max_length=50)
+
+    class Meta:
+        db_table = "Dispute"
 
 # class GroupInfo(models.Model):
 #     group = models.ManyToManyField(Group, on_delete=models.CASCADE, null=False)

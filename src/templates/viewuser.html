@@ -257,6 +257,7 @@
 
           <!-- Content Row -->
           <div class="row">
+            {% if user.id == uid %}
             <table class="table table-striped table-responsive-md btn-table col-lg-12 mb-4">
               <tr>
                 <td>Last Name: {{ user.last_name }}</td>
@@ -274,6 +275,7 @@
                 <td>User Group: {{ user.groups.name }}</td>
               </tr>
               </table>
+            {% endif %}
           </div>
 
           <div class="row">
